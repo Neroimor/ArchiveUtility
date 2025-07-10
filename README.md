@@ -1,4 +1,4 @@
-﻿﻿# Utility for Reading, Saving and Archiving Files
+#﻿# Utility for Reading, Saving and Archiving Files
 
 Небольшая консольная утилита на .NET для чтения/записи текстовых файлов и их автоматической упаковки в ZIP/RAR‑архив с помощью библиотеки [SharpCompress](https://github.com/adamhathcock/sharpcompress).
 
