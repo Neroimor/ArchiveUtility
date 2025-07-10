@@ -1,12 +1,13 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
-using System.Threading.Tasks;
-using SharpCompress.Archives;
+﻿using SharpCompress.Archives;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Common;
 using SharpCompress.Writers;
 using SharpCompress.Writers.Zip;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
+using System.Threading.Tasks;
 
 
 namespace Utility_for_reading_and_saving_files.Files.Factory
@@ -67,10 +68,59 @@ namespace Utility_for_reading_and_saving_files.Files.Factory
 
     internal class ConcreateArchiveRAR : Archive
     {
+
+        private const string RarExe = "C:\\Program Files\\WinRAR\\rar.exe";
+
         public override async Task<bool> GoToArchive(string sourcePath)
         {
-            Console.WriteLine("RAR creation is not supported by SharpCompress. Please use ZIP or an external RAR tool.");
-            return await Task.FromResult(false);
+            if (!File.Exists(sourcePath))
+            {
+                Console.WriteLine($"Source not found: {sourcePath}");
+                return false;
+            }
+
+            string archivePath = Path.ChangeExtension(sourcePath, ".rar");
+            string sourceDir = Path.GetDirectoryName(sourcePath)!;
+            string fileName = Path.GetFileName(sourcePath);
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = RarExe,
+                WorkingDirectory = sourceDir,
+                Arguments = $"a \"{archivePath}\" \"{fileName}\"",
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
+
+            try
+            {
+                using var proc = Process.Start(psi);
+                if (proc == null)
+                {
+                    Console.WriteLine("Failed to start rar.exe process.");
+                    return false;
+                }
+
+                string output = await proc.StandardOutput.ReadToEndAsync();
+                string error = await proc.StandardError.ReadToEndAsync();
+                await proc.WaitForExitAsync();
+
+                if (proc.ExitCode != 0)
+                {
+                    Console.WriteLine($"RAR error (code {proc.ExitCode}): {error}");
+                    return false;
+                }
+
+                Console.WriteLine($"Created RAR archive: {archivePath}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error running rar.exe: {ex.Message}");
+                return false;
+            }
         }
 
         public override async Task<bool> ExtractArchive(string archivePath, string destinationPath)
@@ -92,6 +142,7 @@ namespace Utility_for_reading_and_saving_files.Files.Factory
                 });
                 Console.WriteLine($"Extracted RAR archive from {archivePath} to {destinationPath}");
             });
+
             return true;
         }
     }

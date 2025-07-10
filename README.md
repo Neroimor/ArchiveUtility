@@ -1,6 +1,6 @@
-﻿# Utility for Reading, Saving and Archiving Files
+﻿﻿# Utility for Reading, Saving and Archiving Files
 
-Небольшая консольная утилита на .NET для чтения/записи текстовых файлов и их автоматической упаковки в ZIP‑архив с помощью библиотеки [SharpCompress](https://github.com/adamhathcock/sharpcompress).
+Небольшая консольная утилита на .NET для чтения/записи текстовых файлов и их автоматической упаковки в ZIP/RAR‑архив с помощью библиотеки [SharpCompress](https://github.com/adamhathcock/sharpcompress).
 
 ---
 
@@ -8,7 +8,7 @@
 
 * **Чтение файла** (`ReadFileAsync`)
 * **Запись файла** (`WriteFileAsync`) с опциональной архивацией
-* **Создание ZIP‑архива** из файла или директории
+* **Создание ZIP/RAR‑архива** из файла или директории
 * **Извлечение ZIP/RAR‑архива** в указанную папку
 * Расширяемая архитектура через паттерн «Фабрика» для добавления новых форматов
 
@@ -102,6 +102,6 @@
 
 ### .NET Target
 
-Проект настроен на **.NET 6.0** или выше. При необходимости измените `<TargetFramework>` в `.csproj`.
+Проект настроен на **.NET 9.0** или выше. При необходимости измените `<TargetFramework>` в `.csproj`.
 
 ---
