@@ -84,7 +84,7 @@
 3. **Реализации**
 
    * `ConcreteArchiveZIP` — ZIP через `System.IO.Compression`.
-   * `ConcreteArchiveRAR` — распаковка RAR через SharpCompress (архивация RAR не поддерживается).
+   * `ConcreteArchiveRAR` — распаковка RAR через SharpCompress.
 
 4. **ArchiveFactory / ConcreteArchiveFactory**
 
